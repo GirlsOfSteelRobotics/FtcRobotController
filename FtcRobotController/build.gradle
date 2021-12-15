@@ -1,5 +1,3 @@
-import java.text.SimpleDateFormat
-
 //
 // build.gradle in FtcRobotController
 //
@@ -8,13 +6,11 @@ apply plugin: 'com.android.library'
 android {
 
     defaultConfig {
-        minSdkVersion 23
-        //noinspection ExpiredTargetSdkVersion
-        targetSdkVersion 28
-        buildConfigField "String", "APP_BUILD_TIME", '"' + (new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ROOT).format(new Date())) + '"'
+        minSdkVersion 19
+        targetSdkVersion 19
     }
 
-    compileSdkVersion 29
+    compileSdkVersion 23
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -22,4 +18,10 @@ android {
     }
 }
 
-apply from: '../build.dependencies.gradle'
+repositories {
+    flatDir {
+        dirs '../libs'
+    }
+}
+
+apply from: 'build.release.gradle'

@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.Range;
 
 
-@TeleOp(name="TestTeleOp", group="Linear Opmode")
-public class TeleOpDrive extends OpMode {
+@TeleOp(name="TeleOp Hopper", group="Linear Opmode")
+public class TeleOpHopper extends OpMode {
 
     private DcMotor TopLeft = null;
     private DcMotor TopRight = null;
@@ -38,34 +38,36 @@ public class TeleOpDrive extends OpMode {
         telemetry.addLine("Loop");
         telemetry.update();
 
-        double drivevalue = -gamepad1.left_stick_y;
-        double leftPower    = Range.clip(drivevalue, -1.0, 1.0) ;
+        double drive = -gamepad1.left_stick_y;
+        double turn  =  gamepad1.right_stick_x;
+        double leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
+        double rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
 
-//        if (gamepad1.left_stick_y>0.5){
-            TopLeft.setPower(leftPower);
-            TopRight.setPower(leftPower);
-            BottomLeft.setPower(leftPower);
-            BottomRight.setPower(leftPower);
-//        }
-//        else if (gamepad1.left_stick_y<-0.5){
-//            TopLeft.setPower(-0.5);
-//            TopRight.setPower(-0.5);
-//            BottomLeft.setPower(-0.5);
-//            BottomRight.setPower(-0.5);
-//        }
-//        else {
-//            TopLeft.setPower(0.0);
-//            TopRight.setPower(0.0);
-//            BottomLeft.setPower(0.0);
-//            BottomRight.setPower(0.0);
-//        }
+        TopLeft.setPower(leftPower);
+        TopRight.setPower(rightPower);
+        BottomLeft.setPower(leftPower);
+        BottomRight.setPower(rightPower);
+
+
+//        double topLeftPower   = Range.clip(drive+turn,-1.0,1.0);
+//        double topRightPower   = Range.clip(drive-turn,-1.0,1.0);
+//        double bottomLeftPower   = Range.clip(-drive-turn,-1.0,1.0);
+//        double bottomRightPower   = Range.clip(-drive+turn,-1.0,1.0);
+
+//        TopLeft.setPower(topLeftPower);
+//        TopRight.setPower(topRightPower);
+//        BottomLeft.setPower(bottomLeftPower);
+//        BottomRight.setPower(bottomRightPower);
+
 
     }
+
 
     @Override
     public void start() {
         telemetry.addLine("Start");
-        telemetry.update();
+        telemetry.update(
+        );
     }
 
     @Override

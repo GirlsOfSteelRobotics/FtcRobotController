@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.Range;
 
 
@@ -21,16 +22,16 @@ public class TeleOpHypatia extends OpMode {
         telemetry.update();
 
         TopLeft  = hardwareMap.dcMotor.get("TopLeft");
-//        TopLeft.setDirection(DcMotor.Direction.FORWARD);
+      TopLeft.setDirection(DcMotor.Direction.REVERSE);
 
         TopRight  = hardwareMap.dcMotor.get("TopRight");
-//        TopRight.setDirection(DcMotor.Direction.FORWARD);
+        TopRight.setDirection(DcMotor.Direction.FORWARD);
 
         BottomLeft  = hardwareMap.dcMotor.get("BottomLeft");
-//        BottomLeft.setDirection(DcMotor.Direction.FORWARD);
+       BottomLeft.setDirection(DcMotor.Direction.REVERSE);
 
         BottomRight  = hardwareMap.dcMotor.get("BottomRight");
-//        BottomRight.setDirection(DcMotor.Direction.FORWARD);
+       BottomRight.setDirection(DcMotor.Direction.FORWARD);
     }
 
     @Override

@@ -14,6 +14,7 @@ public class TeleOpHypatia extends OpMode {
     private DcMotor TopRight = null;
     private DcMotor BottomLeft = null;
     private DcMotor BottomRight = null;
+    private DcMotor Elbow = null;
 
 
     @Override
@@ -32,6 +33,9 @@ public class TeleOpHypatia extends OpMode {
 
         BottomRight  = hardwareMap.dcMotor.get("BottomRight");
        BottomRight.setDirection(DcMotor.Direction.FORWARD);
+
+       Elbow = hardwareMap.dcMotor.get("Elbow");
+       Elbow.setDirection(DcMotor.Direction.FORWARD);
     }
 
     @Override
@@ -48,6 +52,16 @@ public class TeleOpHypatia extends OpMode {
         TopRight.setPower(rightPower);
         BottomLeft.setPower(leftPower);
         BottomRight.setPower(rightPower);
+
+        if(gamepad1.dpad_up){
+            Elbow.setPower(.3);
+        }
+        else if(gamepad1.dpad_down){
+            Elbow.setPower(-.3);
+        }
+        else{
+            Elbow.setPower(0.0);
+        }
 
 
 //        double topLeftPower   = Range.clip(drive+turn,-1.0,1.0);
@@ -80,5 +94,6 @@ public class TeleOpHypatia extends OpMode {
         TopRight.setPower(0.0);
         BottomLeft.setPower(0.0);
         BottomRight.setPower(0.0);
+        Elbow.setPower(0.0);
     }
 }

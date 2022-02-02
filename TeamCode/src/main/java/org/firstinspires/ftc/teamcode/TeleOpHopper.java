@@ -21,7 +21,6 @@ public class TeleOpHopper extends OpMode {
     public void init() {
         telemetry.addLine("Startinit");
         telemetry.update();
-
         TopLeft  = hardwareMap.dcMotor.get("TopLeft");
        TopLeft.setDirection(DcMotor.Direction.FORWARD);
 

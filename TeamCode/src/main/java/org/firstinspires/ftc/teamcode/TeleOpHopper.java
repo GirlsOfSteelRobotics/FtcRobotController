@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 
@@ -15,7 +16,8 @@ public class TeleOpHopper extends OpMode {
     private DcMotor BottomLeft = null;
     private DcMotor BottomRight = null;
     private DcMotor ClawMotor = null;
-
+    private Servo ClawServoR = null;
+    private Servo ClawServoL = null;
 
     @Override
     public void init() {
@@ -35,6 +37,11 @@ public class TeleOpHopper extends OpMode {
 
         ClawMotor = hardwareMap.dcMotor.get("ClawMotor");
         ClawMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        ClawServoR = hardwareMap.servo.get("ClawServoR");
+        ClawServoR.setPosition(-0.1);
+
+        ClawServoL = hardwareMap.servo.get("ClawServoL");
     }
 
     @Override
@@ -58,9 +65,16 @@ public class TeleOpHopper extends OpMode {
         else if (gamepad1.a){
             ClawMotor.setPower(-0.3);
         }
+        else if (gamepad1.x) {
+            ClawServoL.setPosition(1);
+        }
+        else if (gamepad1.b) {
+            ClawServoL.setPosition(-1);
+        }
         else {
             ClawMotor.setPower(0.0);
         }
+
 //        double topLeftPower   = Range.clip(drive+turn,-1.0,1.0);
 //        double topRightPower   = Range.clip(drive-turn,-1.0,1.0);
 //        double bottomLeftPower   = Range.clip(-drive-turn,-1.0,1.0);

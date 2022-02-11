@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 
@@ -15,6 +16,8 @@ public class TeleOpHypatia extends OpMode {
     private DcMotor BottomLeft = null;
     private DcMotor BottomRight = null;
     private DcMotor Elbow = null;
+    private Servo Wrist = null;
+    // phone 9820
 
 
     @Override
@@ -31,11 +34,14 @@ public class TeleOpHypatia extends OpMode {
         BottomLeft  = hardwareMap.dcMotor.get("BottomLeft");
        BottomLeft.setDirection(DcMotor.Direction.REVERSE);
 
-        BottomRight  = hardwareMap.dcMotor.get("BottomRight");
+       BottomRight  = hardwareMap.dcMotor.get("BottomRight");
        BottomRight.setDirection(DcMotor.Direction.FORWARD);
 
        Elbow = hardwareMap.dcMotor.get("Elbow");
        Elbow.setDirection(DcMotor.Direction.FORWARD);
+
+       Wrist = hardwareMap.get(Servo.class, "Wrist");
+       // Wrist.setDirection(Servo.Direction.FORWARD);
     }
 
     @Override
@@ -54,14 +60,22 @@ public class TeleOpHypatia extends OpMode {
         BottomRight.setPower(rightPower);
 
         if(gamepad1.dpad_up){
-            Elbow.setPower(.3);
+            Elbow.setPower(0.5);
         }
         else if(gamepad1.dpad_down){
-            Elbow.setPower(-.3);
+            Elbow.setPower(-0.5);
         }
         else{
             Elbow.setPower(0.0);
         }
+
+        if(gamepad1.y){
+            Wrist.setPosition(1.0);
+        }
+        else if (gamepad1.a){
+            Wrist.setPosition(-1.0);
+        }
+
 
 
 //        double topLeftPower   = Range.clip(drive+turn,-1.0,1.0);
@@ -95,5 +109,6 @@ public class TeleOpHypatia extends OpMode {
         BottomLeft.setPower(0.0);
         BottomRight.setPower(0.0);
         Elbow.setPower(0.0);
+        Wrist.setPosition(0.0);
     }
 }

@@ -36,8 +36,8 @@ public class autoHopper extends LinearOpMode {
         BottomLeft = hwMap.get(DcMotor.class, "Bottom_Left");
         BottomRight = hwMap.get(DcMotor.class, "Bottom_Right");
         ClawMotor = hwMap.get(DcMotor.class, "Claw_Motor");
-        leftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        rightDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
+        //leftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
+        //rightDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
 
 
     }

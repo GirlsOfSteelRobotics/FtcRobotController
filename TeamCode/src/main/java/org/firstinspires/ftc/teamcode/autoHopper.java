@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
@@ -19,6 +20,7 @@ public class autoHopper extends LinearOpMode {
     private DcMotor BottomLeft = null;
     private DcMotor BottomRight = null;
     private DcMotor ClawMotor = null;
+    private Servo ClawServo = null;
 
     HardwareMap hwMap =  null;
     HardwarePushbot robot = new HardwarePushbot();   // Use a Pushbot's hardware
@@ -36,9 +38,6 @@ public class autoHopper extends LinearOpMode {
         BottomLeft = hwMap.get(DcMotor.class, "Bottom_Left");
         BottomRight = hwMap.get(DcMotor.class, "Bottom_Right");
         ClawMotor = hwMap.get(DcMotor.class, "Claw_Motor");
-        leftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        rightDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
-
 
     }
 
@@ -58,5 +57,7 @@ public class autoHopper extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
+        // motion starts in this one or in a new public void? -gray
     }
+
 }

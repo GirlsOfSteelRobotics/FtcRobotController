@@ -17,6 +17,8 @@ public class TeleOpHypatia extends OpMode {
     private DcMotor BottomRight = null;
     private DcMotor Elbow = null;
     private Servo Wrist = null;
+    private Servo Claw = null;
+    private Servo Carousel = null;
     // phone 9820
 
 
@@ -42,6 +44,8 @@ public class TeleOpHypatia extends OpMode {
 
        Wrist = hardwareMap.get(Servo.class, "Wrist");
        // Wrist.setDirection(Servo.Direction.FORWARD);
+
+       Claw = hardwareMap.get(Servo.class, "Claw");
     }
 
     @Override
@@ -61,9 +65,11 @@ public class TeleOpHypatia extends OpMode {
 
         if(gamepad1.dpad_up){
             Elbow.setPower(0.5);
+            telemetry.addLine("Elbow up");
         }
         else if(gamepad1.dpad_down){
             Elbow.setPower(-0.5);
+            telemetry.addLine("Elbow down");
         }
         else{
             Elbow.setPower(0.0);
@@ -71,11 +77,21 @@ public class TeleOpHypatia extends OpMode {
 
         if(gamepad1.y){
             Wrist.setPosition(1.0);
+            telemetry.addLine("Wrist up");
         }
         else if (gamepad1.a){
             Wrist.setPosition(-1.0);
+            telemetry.addLine("Wrist down");
         }
 
+        if(gamepad1.b){
+            Claw.setPosition(1.0);
+            telemetry.addLine("Claw open");
+        }
+        else if (gamepad1.x){
+            Claw.setPosition(-1.0);
+            telemetry.addLine("Claw close");
+        }
 
 
 //        double topLeftPower   = Range.clip(drive+turn,-1.0,1.0);
@@ -110,5 +126,6 @@ public class TeleOpHypatia extends OpMode {
         BottomRight.setPower(0.0);
         Elbow.setPower(0.0);
         Wrist.setPosition(0.0);
+        Claw.setPosition(0.0);
     }
 }

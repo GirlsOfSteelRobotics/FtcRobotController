@@ -60,10 +60,10 @@ public class TeleOpHopper extends OpMode {
        BottomRight.setPower(rightPower);
 
         if (gamepad1.y){
-            ClawMotor.setPower(0.3);
+            ClawMotor.setPower(0.4);
         }
         else if (gamepad1.a){
-            ClawMotor.setPower(-0.3);
+            ClawMotor.setPower(-0.5);
         }
        else if (gamepad1.x) {
             ClawServoL.setPosition(0.5);

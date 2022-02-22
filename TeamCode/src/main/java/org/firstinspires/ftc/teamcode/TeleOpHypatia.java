@@ -64,11 +64,11 @@ public class TeleOpHypatia extends OpMode {
         BottomRight.setPower(rightPower);
 
         if(gamepad1.dpad_up){
-            Elbow.setPower(0.5);
+            Elbow.setPower(0.3);
             telemetry.addLine("Elbow up");
         }
         else if(gamepad1.dpad_down){
-            Elbow.setPower(-0.5);
+            Elbow.setPower(-0.3);
             telemetry.addLine("Elbow down");
         }
         else{
@@ -93,7 +93,7 @@ public class TeleOpHypatia extends OpMode {
             telemetry.addLine("Claw close");
         }
 
-
+        telemetry.update();
 //        double topLeftPower   = Range.clip(drive+turn,-1.0,1.0);
 //        double topRightPower   = Range.clip(drive-turn,-1.0,1.0);
 //        double bottomLeftPower   = Range.clip(-drive-turn,-1.0,1.0);

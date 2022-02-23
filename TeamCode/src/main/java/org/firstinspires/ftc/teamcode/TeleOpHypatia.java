@@ -42,15 +42,19 @@ public class TeleOpHypatia extends OpMode {
        Elbow = hardwareMap.dcMotor.get("Elbow");
        Elbow.setDirection(DcMotor.Direction.FORWARD);
 
-       Wrist = hardwareMap.get(Servo.class, "Wrist");
+       // Wrist = hardwareMap.get(Servo.class, "Wrist");
        // Wrist.setDirection(Servo.Direction.FORWARD);
+        Wrist = hardwareMap.servo.get("Wrist");
+        Wrist.setPosition(-1.0);
 
-       Claw = hardwareMap.get(Servo.class, "Claw");
+        Claw = hardwareMap.servo.get("Claw");
+        Claw.setPosition(1.0);
+       // Claw = hardwareMap.get(Servo.class, "Claw");
     }
 
     @Override
     public void loop() {
-        telemetry.addLine("Loop");
+//        telemetry.addLine("Loop");
         telemetry.update();
 
         double drive = -gamepad1.left_stick_y;
@@ -64,17 +68,18 @@ public class TeleOpHypatia extends OpMode {
         BottomRight.setPower(rightPower);
 
         if(gamepad1.dpad_up){
-            Elbow.setPower(0.3);
+            Elbow.setPower(0.4);
             telemetry.addLine("Elbow up");
         }
         else if(gamepad1.dpad_down){
-            Elbow.setPower(-0.3);
+            Elbow.setPower(-0.4);
             telemetry.addLine("Elbow down");
         }
         else{
             Elbow.setPower(0.0);
         }
 
+//        telemetry.addLine("Checking buttons");
         if(gamepad1.y){
             Wrist.setPosition(1.0);
             telemetry.addLine("Wrist up");
@@ -94,25 +99,13 @@ public class TeleOpHypatia extends OpMode {
         }
 
         telemetry.update();
-//        double topLeftPower   = Range.clip(drive+turn,-1.0,1.0);
-//        double topRightPower   = Range.clip(drive-turn,-1.0,1.0);
-//        double bottomLeftPower   = Range.clip(-drive-turn,-1.0,1.0);
-//        double bottomRightPower   = Range.clip(-drive+turn,-1.0,1.0);
-
-//        TopLeft.setPower(topLeftPower);
-//        TopRight.setPower(topRightPower);
-//        BottomLeft.setPower(bottomLeftPower);
-//        BottomRight.setPower(bottomRightPower);
-
-
     }
 
 
     @Override
     public void start() {
         telemetry.addLine("Start");
-        telemetry.update(
-        );
+        telemetry.update();
     }
 
     @Override
@@ -125,7 +118,7 @@ public class TeleOpHypatia extends OpMode {
         BottomLeft.setPower(0.0);
         BottomRight.setPower(0.0);
         Elbow.setPower(0.0);
-        Wrist.setPosition(0.0);
-        Claw.setPosition(0.0);
+        // Wrist.setPosition(0.0);
+        // Claw.setPosition(0.0);
     }
 }

@@ -18,6 +18,7 @@ public class TeleOpHopper extends OpMode {
     private DcMotor ClawMotor = null;
    private Servo ClawServoR = null;
     private Servo ClawServoL = null;
+    private Servo Duck = null;
 
     @Override
     public void init() {
@@ -42,6 +43,10 @@ public class TeleOpHopper extends OpMode {
         //ClawServoR.setPosition(0.0);
 
         ClawServoL = hardwareMap.servo.get("ClawServoL");
+
+        Duck = hardwareMap.servo.get("Duck");
+
+
     }
 
     @Override
@@ -66,11 +71,16 @@ public class TeleOpHopper extends OpMode {
             ClawMotor.setPower(-0.7);
         }
        else if (gamepad1.x) {
-            ClawServoL.setPosition(0.5);
+            ClawServoL.setPosition(1);
         }
         else if (gamepad1.b) {
-            ClawServoL.setPosition(-2);
+            ClawServoL.setPosition(-1);
         }
+
+        else if (gamepad1.left_bumper) {
+            Duck.setPosition(1);
+        }
+
         else {
             ClawMotor.setPower(0.0);
         }

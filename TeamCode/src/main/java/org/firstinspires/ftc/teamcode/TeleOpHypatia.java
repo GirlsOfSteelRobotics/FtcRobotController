@@ -28,16 +28,16 @@ public class TeleOpHypatia extends OpMode {
         telemetry.update();
 
         TopLeft  = hardwareMap.dcMotor.get("TopLeft");
-      TopLeft.setDirection(DcMotor.Direction.REVERSE);
+        TopLeft.setDirection(DcMotor.Direction.REVERSE);
 
         TopRight  = hardwareMap.dcMotor.get("TopRight");
         TopRight.setDirection(DcMotor.Direction.FORWARD);
 
         BottomLeft  = hardwareMap.dcMotor.get("BottomLeft");
-       BottomLeft.setDirection(DcMotor.Direction.REVERSE);
+       BottomLeft.setDirection(DcMotor.Direction.FORWARD);
 
        BottomRight  = hardwareMap.dcMotor.get("BottomRight");
-       BottomRight.setDirection(DcMotor.Direction.FORWARD);
+       BottomRight.setDirection(DcMotor.Direction.REVERSE);
 
        Elbow = hardwareMap.dcMotor.get("Elbow");
        Elbow.setDirection(DcMotor.Direction.FORWARD);
@@ -45,9 +45,11 @@ public class TeleOpHypatia extends OpMode {
        // Wrist = hardwareMap.get(Servo.class, "Wrist");
        // Wrist.setDirection(Servo.Direction.FORWARD);
         Wrist = hardwareMap.servo.get("Wrist");
-        Wrist.setPosition(-1.0);
+        Wrist.setDirection(Servo.Direction.FORWARD);
+//        Wrist.setPosition(-1.0);
 
         Claw = hardwareMap.servo.get("Claw");
+        Claw.setDirection(Servo.Direction.FORWARD);
         Claw.setPosition(1.0);
        // Claw = hardwareMap.get(Servo.class, "Claw");
     }
@@ -81,21 +83,25 @@ public class TeleOpHypatia extends OpMode {
 
 //        telemetry.addLine("Checking buttons");
         if(gamepad1.y){
-            Wrist.setPosition(1.0);
+            Wrist.setPosition(0.5);
             telemetry.addLine("Wrist up");
+            telemetry.addLine("Wrist position: " + Wrist.getPosition());
         }
         else if (gamepad1.a){
-            Wrist.setPosition(-1.0);
+            Wrist.setPosition(0.1);
             telemetry.addLine("Wrist down");
+            telemetry.addLine("Wrist position: " + Wrist.getPosition());
         }
 
         if(gamepad1.b){
-            Claw.setPosition(1.0);
+            Claw.setPosition(0.5);
             telemetry.addLine("Claw open");
+            telemetry.addLine("Claw position: " + Claw.getPosition());
         }
         else if (gamepad1.x){
-            Claw.setPosition(-1.0);
+            Claw.setPosition(0.1);
             telemetry.addLine("Claw close");
+            telemetry.addLine("Claw position: " + Claw.getPosition());
         }
 
         telemetry.update();

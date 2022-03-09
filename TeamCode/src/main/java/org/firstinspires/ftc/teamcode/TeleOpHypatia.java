@@ -28,16 +28,16 @@ public class TeleOpHypatia extends OpMode {
         telemetry.update();
 
         TopLeft  = hardwareMap.dcMotor.get("TopLeft");
-        TopLeft.setDirection(DcMotor.Direction.REVERSE);
+        TopLeft.setDirection(DcMotor.Direction.FORWARD); //reverse
 
         TopRight  = hardwareMap.dcMotor.get("TopRight");
-        TopRight.setDirection(DcMotor.Direction.FORWARD);
+        TopRight.setDirection(DcMotor.Direction.REVERSE);
 
         BottomLeft  = hardwareMap.dcMotor.get("BottomLeft");
        BottomLeft.setDirection(DcMotor.Direction.FORWARD);
 
        BottomRight  = hardwareMap.dcMotor.get("BottomRight");
-       BottomRight.setDirection(DcMotor.Direction.REVERSE);
+       BottomRight.setDirection(DcMotor.Direction.REVERSE); //reverse
 
        Elbow = hardwareMap.dcMotor.get("Elbow");
        Elbow.setDirection(DcMotor.Direction.FORWARD);
@@ -59,8 +59,8 @@ public class TeleOpHypatia extends OpMode {
 //        telemetry.addLine("Loop");
         telemetry.update();
 
-        double drive = -gamepad1.left_stick_y;
-        double turn  =  gamepad1.right_stick_x;
+        double drive = gamepad1.left_stick_y;
+        double turn  = -gamepad1.right_stick_x;
         double leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
         double rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
 
@@ -74,7 +74,7 @@ public class TeleOpHypatia extends OpMode {
             telemetry.addLine("Elbow up");
         }
         else if(gamepad1.dpad_down){
-            Elbow.setPower(-0.4);
+            Elbow.setPower(-0.6);
             telemetry.addLine("Elbow down");
         }
         else{

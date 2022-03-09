@@ -16,13 +16,12 @@ public class TeleOpHopper extends OpMode {
     private DcMotor BottomLeft = null;
     private DcMotor BottomRight = null;
     private DcMotor ClawMotor = null;
-   private Servo ClawServoR = null;
-    private Servo ClawServoL = null;
+    private DcMotor ClawGrabber = null;
     private Servo Duck = null;
 
     @Override
     public void init() {
-        telemetry.addLine("Startinit");
+        telemetry.addLine("Start init");
         telemetry.update();
         TopLeft  = hardwareMap.dcMotor.get("TopLeft");
        TopLeft.setDirection(DcMotor.Direction.FORWARD);
@@ -31,18 +30,20 @@ public class TeleOpHopper extends OpMode {
         TopRight.setDirection(DcMotor.Direction.REVERSE);
 
         BottomLeft  = hardwareMap.dcMotor.get("BottomLeft");
-       BottomLeft.setDirection(DcMotor.Direction.FORWARD);
+        BottomLeft.setDirection(DcMotor.Direction.FORWARD);
 
         BottomRight  = hardwareMap.dcMotor.get("BottomRight");
         BottomRight.setDirection(DcMotor.Direction.REVERSE);
 
         ClawMotor = hardwareMap.dcMotor.get("ClawMotor");
         ClawMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+//        ClawMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        ClawMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        ClawServoR = hardwareMap.servo.get("ClawServoR");
-        //ClawServoR.setPosition(0.0);
-
-        ClawServoL = hardwareMap.servo.get("ClawServoL");
+        ClawGrabber = hardwareMap.dcMotor.get("ClawGrabber");
+        ClawGrabber.setDirection(DcMotorSimple.Direction.FORWARD);
+//        ClawGrabber.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        ClawGrabber.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         Duck = hardwareMap.servo.get("Duck");
 
@@ -64,37 +65,38 @@ public class TeleOpHopper extends OpMode {
        BottomLeft.setPower(leftPower);
        BottomRight.setPower(rightPower);
 
+//       if (!ClawMotor.isBusy()) {
+//           ClawMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//       }
+//       if (!ClawGrabber.isBusy()) {
+//           ClawGrabber.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//       }
+
         if (gamepad1.y){
-            ClawMotor.setPower(0.4);
+//            ClawMotor.setTargetPosition(1);
+//            ClawMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//            ClawMotor.setPower(0.5);
         }
         else if (gamepad1.a){
-            ClawMotor.setPower(-0.7);
+//            ClawMotor.setTargetPosition(0);
+//            ClawMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//            ClawMotor.setPower(0.5);
         }
        else if (gamepad1.x) {
-            ClawServoL.setPosition(1);
+//            ClawGrabber.setTargetPosition(20);
+//            ClawGrabber.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
         else if (gamepad1.b) {
-            ClawServoL.setPosition(-1);
+//            ClawGrabber.setTargetPosition(-20);
+//            ClawGrabber.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
-
         else if (gamepad1.left_bumper) {
             Duck.setPosition(1);
         }
-
         else {
             ClawMotor.setPower(0.0);
+            ClawGrabber.setPower(0.0);
         }
-
-//        double topLeftPower   = Range.clip(drive+turn,-1.0,1.0);
-//        double topRightPower   = Range.clip(drive-turn,-1.0,1.0);
-//        double bottomLeftPower   = Range.clip(-drive-turn,-1.0,1.0);
-//        double bottomRightPower   = Range.clip(-drive+turn,-1.0,1.0);
-
-//        TopLeft.setPower(topLeftPower);
-//        TopRight.setPower(topRightPower);
-//        BottomLeft.setPower(bottomLeftPower);
-//        BottomRight.setPower(bottomRightPower);
-
 
     }
 

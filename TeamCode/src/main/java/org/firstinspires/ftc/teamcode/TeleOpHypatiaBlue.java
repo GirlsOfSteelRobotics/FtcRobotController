@@ -3,13 +3,12 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 
-@TeleOp(name="TeleOp Hypatia", group="Linear Opmode")
-public class TeleOpHypatia extends OpMode {
+@TeleOp(name="TeleOp Hypatia Blue", group="Linear Opmode")
+public class TeleOpHypatiaBlue extends OpMode {
 
     private DcMotor TopLeft = null;
     private DcMotor TopRight = null;
@@ -83,7 +82,7 @@ public class TeleOpHypatia extends OpMode {
 
 //        telemetry.addLine("Checking buttons");
         if(gamepad1.y){
-            Wrist.setPosition(0.5);
+            Wrist.setPosition(0.3);
             telemetry.addLine("Wrist up");
             telemetry.addLine("Wrist position: " + Wrist.getPosition());
         }
@@ -112,6 +111,8 @@ public class TeleOpHypatia extends OpMode {
     public void start() {
         telemetry.addLine("Start");
         telemetry.update();
+
+        Carousel.setPosition(-1);
     }
 
     @Override

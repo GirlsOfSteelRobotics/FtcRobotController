@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 
 @TeleOp(name="TeleOp Hypatia Blue", group="Linear Opmode")
@@ -15,10 +16,21 @@ public class TeleOpHypatiaBlue extends OpMode {
     private DcMotor BottomLeft = null;
     private DcMotor BottomRight = null;
     private DcMotor Elbow = null;
-    private Servo Wrist = null;
+    private DcMotorEx Arm = null;
     private Servo Claw = null;
     private Servo Carousel = null;
     // phone 9820
+
+    // Stores the arm's current position
+    private int armPosition;
+
+    // Ideal encoder tick position for arm to be in full up or down position
+    private final int ARM_UP_POSITION = -90;
+    private final int ARM_DOWN_POSITION = 0;
+
+    // Ideal speed (in encoder ticks/second) to try to get to up or down positions
+    private final int ARM_UP_VELOCITY = 180;
+    private final int ARM_DOWN_VELOCITY = 50;
 
 
     @Override
@@ -41,16 +53,19 @@ public class TeleOpHypatiaBlue extends OpMode {
        Elbow = hardwareMap.dcMotor.get("Elbow");
        Elbow.setDirection(DcMotor.Direction.FORWARD);
 
-       // Wrist = hardwareMap.get(Servo.class, "Wrist");
-       // Wrist.setDirection(Servo.Direction.FORWARD);
-        Wrist = hardwareMap.servo.get("Wrist");
-        Wrist.setDirection(Servo.Direction.FORWARD);
-//        Wrist.setPosition(-1.0);
+       Arm = hardwareMap.get(DcMotorEx.class, "Arm");
+       Arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+       armPosition = 0;
 
         Claw = hardwareMap.servo.get("Claw");
         Claw.setDirection(Servo.Direction.FORWARD);
         Claw.setPosition(1.0);
        // Claw = hardwareMap.get(Servo.class, "Claw");
+
+        Carousel = hardwareMap.servo.get("Carousel");
+        Carousel.setDirection(Servo.Direction.FORWARD);
+        Carousel.setPosition(1.0);
+
     }
 
     @Override
@@ -80,16 +95,28 @@ public class TeleOpHypatiaBlue extends OpMode {
             Elbow.setPower(0.0);
         }
 
-//        telemetry.addLine("Checking buttons");
-        if(gamepad1.y){
-            Wrist.setPosition(0.3);
-            telemetry.addLine("Wrist up");
-            telemetry.addLine("Wrist position: " + Wrist.getPosition());
+        if(gamepad1.a){
+            // Arm goes down
+            telemetry.addLine("Arm down");
+            if (armPosition != ARM_DOWN_POSITION) {
+                armPosition = ARM_DOWN_POSITION;
+                Arm.setTargetPosition(armPosition);
+                Arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                Arm.setVelocity(ARM_DOWN_VELOCITY);
+                telemetry.addLine("Arm set to position" + armPosition);
+            }
         }
-        else if (gamepad1.a){
-            Wrist.setPosition(0.1);
-            telemetry.addLine("Wrist down");
-            telemetry.addLine("Wrist position: " + Wrist.getPosition());
+//
+        else if(gamepad1.y){
+            // Arm goes up
+            telemetry.addLine("Arm up");
+            if (armPosition != ARM_UP_POSITION){
+                armPosition = ARM_UP_POSITION;
+                Arm.setTargetPosition(armPosition);
+                Arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                Arm.setVelocity(ARM_UP_VELOCITY);
+                telemetry.addLine("Arm set to position" + armPosition);
+            }
         }
 
         if(gamepad1.b){

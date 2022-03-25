@@ -15,22 +15,29 @@ public class TeleOpHypatiaBlue extends OpMode {
     private DcMotor TopRight = null;
     private DcMotor BottomLeft = null;
     private DcMotor BottomRight = null;
-    private DcMotor Elbow = null;
+    private DcMotorEx Elbow = null;
     private DcMotorEx Arm = null;
     private Servo Claw = null;
     private Servo Carousel = null;
     // phone 9820
 
-    // Stores the arm's current position
+    // Stores the arm's and elbow's current position
     private int armPosition;
+    private int elbowPosition;
 
     // Ideal encoder tick position for arm to be in full up or down position
-    private final int ARM_UP_POSITION = -90;
+    private final int ARM_UP_POSITION = -35;
     private final int ARM_DOWN_POSITION = 0;
 
+    private final int ELBOW_UP_POSITION = 60;
+    private final int ELBOW_DOWN_POSITION = 0;
+
     // Ideal speed (in encoder ticks/second) to try to get to up or down positions
-    private final int ARM_UP_VELOCITY = 180;
-    private final int ARM_DOWN_VELOCITY = 50;
+    private final int ARM_UP_VELOCITY = 70;
+    private final int ARM_DOWN_VELOCITY = 70;
+
+    private final int ELBOW_UP_VELOCITY = 100;
+    private final int ELBOW_DOWN_VELOCITY = 100;
 
 
     @Override
@@ -50,8 +57,9 @@ public class TeleOpHypatiaBlue extends OpMode {
        BottomRight  = hardwareMap.dcMotor.get("BottomRight");
        BottomRight.setDirection(DcMotor.Direction.REVERSE); //reverse
 
-       Elbow = hardwareMap.dcMotor.get("Elbow");
-       Elbow.setDirection(DcMotor.Direction.FORWARD);
+       Elbow = hardwareMap.get(DcMotorEx.class, "Elbow");
+       Elbow.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+       elbowPosition = 0;
 
        Arm = hardwareMap.get(DcMotorEx.class, "Arm");
        Arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -84,16 +92,30 @@ public class TeleOpHypatiaBlue extends OpMode {
         BottomRight.setPower(rightPower);
 
         if(gamepad1.dpad_up){
-            Elbow.setPower(0.4);
+            // Elbow goes up
             telemetry.addLine("Elbow up");
+            if (elbowPosition != ELBOW_UP_POSITION){
+                elbowPosition = ELBOW_UP_POSITION;
+                Elbow.setTargetPosition(elbowPosition);
+                Elbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                Elbow.setVelocity(ELBOW_UP_VELOCITY);
+                telemetry.addLine("Elbow set to position " + elbowPosition);
+            }
         }
         else if(gamepad1.dpad_down){
-            Elbow.setPower(-0.6);
+            // Elbow goes down
             telemetry.addLine("Elbow down");
+            if (elbowPosition != ELBOW_DOWN_POSITION) {
+                elbowPosition = ELBOW_DOWN_POSITION;
+                Elbow.setTargetPosition(elbowPosition);
+                Elbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                Elbow.setVelocity(ELBOW_DOWN_VELOCITY);
+                telemetry.addLine("Elbow set to position " + elbowPosition);
+            }
         }
-        else{
+/*        else{
             Elbow.setPower(0.0);
-        }
+        }*/
 
         if(gamepad1.a){
             // Arm goes down
@@ -129,10 +151,20 @@ public class TeleOpHypatiaBlue extends OpMode {
             telemetry.addLine("Claw close");
             telemetry.addLine("Claw position: " + Claw.getPosition());
         }
-
+        if (Elbow.isBusy()){
+            telemetry.addData("Elbow position", Elbow.getCurrentPosition());
+        }
+        if (Arm.isBusy()){
+            telemetry.addData("Arm position", Arm.getCurrentPosition());
+/*            if (armPosition == ARM_UP_POSITION & Math.abs(armPosition-Arm.getCurrentPosition()) < 5){
+                Arm.setVelocity(0);
+            }
+            if (armPosition == ARM_DOWN_POSITION & Math.abs(armPosition-Arm.getCurrentPosition()) < 5){
+                Arm.setVelocity(0);
+            }*/
+        }
         telemetry.update();
     }
-
 
     @Override
     public void start() {
@@ -151,7 +183,7 @@ public class TeleOpHypatiaBlue extends OpMode {
         TopRight.setPower(0.0);
         BottomLeft.setPower(0.0);
         BottomRight.setPower(0.0);
-        Elbow.setPower(0.0);
+        // Elbow.setPower(0.0);
         // Wrist.setPosition(0.0);
         // Claw.setPosition(0.0);
     }

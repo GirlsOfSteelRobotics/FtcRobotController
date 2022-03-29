@@ -3,9 +3,9 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 
 @TeleOp(name="TeleOp Hypatia Red", group="Linear Opmode")
@@ -15,11 +15,29 @@ public class TeleOpHypatiaRed extends OpMode {
     private DcMotor TopRight = null;
     private DcMotor BottomLeft = null;
     private DcMotor BottomRight = null;
-    private DcMotor Elbow = null;
-    private Servo Wrist = null;
+    private DcMotorEx Elbow = null;
+    private DcMotorEx Arm = null;
     private Servo Claw = null;
     private Servo Carousel = null;
     // phone 9820
+
+    // Stores the arm's and elbow's current position
+    private int armPosition;
+    private int elbowPosition;
+
+    // Ideal encoder tick position for arm to be in full up or down position
+    private final int ARM_UP_POSITION = -35;
+    private final int ARM_DOWN_POSITION = 0;
+
+    private final int ELBOW_UP_POSITION = 60;
+    private final int ELBOW_DOWN_POSITION = 0;
+
+    // Ideal speed (in encoder ticks/second) to try to get to up or down positions
+    private final int ARM_UP_VELOCITY = 70;
+    private final int ARM_DOWN_VELOCITY = 70;
+
+    private final int ELBOW_UP_VELOCITY = 100;
+    private final int ELBOW_DOWN_VELOCITY = 100;
 
 
     @Override
@@ -34,26 +52,28 @@ public class TeleOpHypatiaRed extends OpMode {
         TopRight.setDirection(DcMotor.Direction.REVERSE);
 
         BottomLeft  = hardwareMap.dcMotor.get("BottomLeft");
-       BottomLeft.setDirection(DcMotor.Direction.FORWARD);
+        BottomLeft.setDirection(DcMotor.Direction.FORWARD);
 
-       BottomRight  = hardwareMap.dcMotor.get("BottomRight");
-       BottomRight.setDirection(DcMotor.Direction.REVERSE); //reverse
+        BottomRight  = hardwareMap.dcMotor.get("BottomRight");
+        BottomRight.setDirection(DcMotor.Direction.REVERSE); //reverse
 
-       Elbow = hardwareMap.dcMotor.get("Elbow");
-       Elbow.setDirection(DcMotor.Direction.FORWARD);
+        Elbow = hardwareMap.get(DcMotorEx.class, "Elbow");
+        Elbow.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        elbowPosition = 0;
 
-       // Wrist = hardwareMap.get(Servo.class, "Wrist");
-       // Wrist.setDirection(Servo.Direction.FORWARD);
-        Wrist = hardwareMap.servo.get("Wrist");
-        Wrist.setDirection(Servo.Direction.FORWARD);
-//        Wrist.setPosition(-1.0);
+        Arm = hardwareMap.get(DcMotorEx.class, "Arm");
+        Arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        armPosition = 0;
 
         Claw = hardwareMap.servo.get("Claw");
         Claw.setDirection(Servo.Direction.FORWARD);
         Claw.setPosition(1.0);
-       // Claw = hardwareMap.get(Servo.class, "Claw");
+        // Claw = hardwareMap.get(Servo.class, "Claw");
 
         Carousel = hardwareMap.servo.get("Carousel");
+        Carousel.setDirection(Servo.Direction.REVERSE);
+        Carousel.setPosition(1.0);
+
     }
 
     @Override
@@ -72,27 +92,53 @@ public class TeleOpHypatiaRed extends OpMode {
         BottomRight.setPower(rightPower);
 
         if(gamepad1.dpad_up){
-            Elbow.setPower(0.4);
+            // Elbow goes up
             telemetry.addLine("Elbow up");
+            if (elbowPosition != ELBOW_UP_POSITION){
+                elbowPosition = ELBOW_UP_POSITION;
+                Elbow.setTargetPosition(elbowPosition);
+                Elbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                Elbow.setVelocity(ELBOW_UP_VELOCITY);
+                telemetry.addLine("Elbow set to position " + elbowPosition);
+            }
         }
         else if(gamepad1.dpad_down){
-            Elbow.setPower(-0.6);
+            // Elbow goes down
             telemetry.addLine("Elbow down");
+            if (elbowPosition != ELBOW_DOWN_POSITION) {
+                elbowPosition = ELBOW_DOWN_POSITION;
+                Elbow.setTargetPosition(elbowPosition);
+                Elbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                Elbow.setVelocity(ELBOW_DOWN_VELOCITY);
+                telemetry.addLine("Elbow set to position " + elbowPosition);
+            }
         }
-        else{
+/*        else{
             Elbow.setPower(0.0);
-        }
+        }*/
 
-//        telemetry.addLine("Checking buttons");
-        if(gamepad1.y){
-            Wrist.setPosition(0.3);
-            telemetry.addLine("Wrist up");
-            telemetry.addLine("Wrist position: " + Wrist.getPosition());
+        if(gamepad1.a){
+            // Arm goes down
+            telemetry.addLine("Arm down");
+            if (armPosition != ARM_DOWN_POSITION) {
+                armPosition = ARM_DOWN_POSITION;
+                Arm.setTargetPosition(armPosition);
+                Arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                Arm.setVelocity(ARM_DOWN_VELOCITY);
+                telemetry.addLine("Arm set to position" + armPosition);
+            }
         }
-        else if (gamepad1.a){
-            Wrist.setPosition(0.1);
-            telemetry.addLine("Wrist down");
-            telemetry.addLine("Wrist position: " + Wrist.getPosition());
+//
+        else if(gamepad1.y){
+            // Arm goes up
+            telemetry.addLine("Arm up");
+            if (armPosition != ARM_UP_POSITION){
+                armPosition = ARM_UP_POSITION;
+                Arm.setTargetPosition(armPosition);
+                Arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                Arm.setVelocity(ARM_UP_VELOCITY);
+                telemetry.addLine("Arm set to position" + armPosition);
+            }
         }
 
         if(gamepad1.b){
@@ -105,17 +151,27 @@ public class TeleOpHypatiaRed extends OpMode {
             telemetry.addLine("Claw close");
             telemetry.addLine("Claw position: " + Claw.getPosition());
         }
-
+        if (Elbow.isBusy()){
+            telemetry.addData("Elbow position", Elbow.getCurrentPosition());
+        }
+        if (Arm.isBusy()){
+            telemetry.addData("Arm position", Arm.getCurrentPosition());
+/*            if (armPosition == ARM_UP_POSITION & Math.abs(armPosition-Arm.getCurrentPosition()) < 5){
+                Arm.setVelocity(0);
+            }
+            if (armPosition == ARM_DOWN_POSITION & Math.abs(armPosition-Arm.getCurrentPosition()) < 5){
+                Arm.setVelocity(0);
+            }*/
+        }
         telemetry.update();
     }
-
 
     @Override
     public void start() {
         telemetry.addLine("Start");
         telemetry.update();
 
-        Carousel.setPosition(1);
+        Carousel.setPosition(-1);
     }
 
     @Override
@@ -127,7 +183,7 @@ public class TeleOpHypatiaRed extends OpMode {
         TopRight.setPower(0.0);
         BottomLeft.setPower(0.0);
         BottomRight.setPower(0.0);
-        Elbow.setPower(0.0);
+        // Elbow.setPower(0.0);
         // Wrist.setPosition(0.0);
         // Claw.setPosition(0.0);
     }

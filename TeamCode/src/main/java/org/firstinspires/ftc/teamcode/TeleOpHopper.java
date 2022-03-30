@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.util.Range;
 public class TeleOpHopper extends OpMode {
 
     private DcMotor TopLeft = null;
+
     private DcMotor TopRight = null;
     private DcMotor BottomLeft = null;
     private DcMotor BottomRight = null;
@@ -23,12 +24,12 @@ public class TeleOpHopper extends OpMode {
     private int armPosition;
 
     // Ideal encoder tick position for arm to be in full up or down position
-    private final int ARM_UP_POSITION = -80;
-    private final int ARM_DOWN_POSITION = -25;
+    private final int ARM_UP_POSITION = -90;
+    private final int ARM_DOWN_POSITION = -15;
 
     // Ideal speed (in encoder ticks/second) to try to get to up or down positions
-    private final int ARM_UP_VELOCITY = 180;
-    private final int ARM_DOWN_VELOCITY = 50;
+    private final int ARM_UP_VELOCITY = 300;
+    private final int ARM_DOWN_VELOCITY = 30;
 
     @Override
     public void init() {
@@ -53,7 +54,7 @@ public class TeleOpHopper extends OpMode {
 
         ClawGrabber = hardwareMap.get(DcMotorEx.class, "ClawGrabber");
 //        ClawGrabber.setDirection(DcMotorSimple.Direction.FORWARD);
-        ClawGrabber.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //ClawGrabber.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         Duck = hardwareMap.servo.get("Duck");
         telemetry.addLine("Motor encoders reset to 0.");
@@ -99,11 +100,11 @@ public class TeleOpHopper extends OpMode {
             }
         }
        else if (gamepad1.x) {
-            ClawGrabber.setPower(0.2);
+            ClawGrabber.setPower(0.3);
             telemetry.addLine("X press: Claw grabber 0.2 power");
         }
         else if (gamepad1.b) {
-            ClawGrabber.setPower(-0.2);
+            ClawGrabber.setPower(-0.3);
             telemetry.addLine("B press: Claw motor -0.2 power");
         }
         else if (gamepad1.left_bumper) {

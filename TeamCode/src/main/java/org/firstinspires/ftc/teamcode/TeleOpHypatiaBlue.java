@@ -36,8 +36,8 @@ public class TeleOpHypatiaBlue extends OpMode {
     private final int ARM_UP_VELOCITY = 70;
     private final int ARM_DOWN_VELOCITY = 70;
 
-    private final int ELBOW_UP_VELOCITY = 100;
-    private final int ELBOW_DOWN_VELOCITY = 100;
+    private final int ELBOW_UP_VELOCITY = 125;
+    private final int ELBOW_DOWN_VELOCITY = 150;
 
 
     @Override

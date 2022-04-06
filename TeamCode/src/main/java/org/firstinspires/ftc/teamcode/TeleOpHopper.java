@@ -17,6 +17,7 @@ public class TeleOpHopper extends OpMode {
     private DcMotor BottomLeft = null;
     private DcMotor BottomRight = null;
     private DcMotorEx ClawMotor = null;
+    private DcMotorEx ClawMotor2 = null;
     private DcMotorEx ClawGrabber = null;
     private Servo Duck = null;
 
@@ -24,12 +25,12 @@ public class TeleOpHopper extends OpMode {
     private int armPosition;
 
     // Ideal encoder tick position for arm to be in full up or down position
-    private final int ARM_UP_POSITION = -90;
-    private final int ARM_DOWN_POSITION = -15;
+    private final int ARM_UP_POSITION = -75;
+    private final int ARM_DOWN_POSITION = -5;
 
     // Ideal speed (in encoder ticks/second) to try to get to up or down positions
     private final int ARM_UP_VELOCITY = 300;
-    private final int ARM_DOWN_VELOCITY = 30;
+    private final int ARM_DOWN_VELOCITY = 75;
 
     @Override
     public void init() {
@@ -50,6 +51,9 @@ public class TeleOpHopper extends OpMode {
         ClawMotor = hardwareMap.get(DcMotorEx.class, "ClawMotor");
 //        ClawMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         ClawMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ClawMotor2 = hardwareMap.get(DcMotorEx.class, "ClawMotor2");
+//        ClawMotor.setDirection(DcMotorSimple.Direction.FORWARD);
+        ClawMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armPosition = 0;
 
         ClawGrabber = hardwareMap.get(DcMotorEx.class, "ClawGrabber");
@@ -81,9 +85,12 @@ public class TeleOpHopper extends OpMode {
             if (armPosition != ARM_DOWN_POSITION) {
                 armPosition = ARM_DOWN_POSITION;
                 ClawMotor.setTargetPosition(armPosition);
+                ClawMotor2.setTargetPosition(armPosition);
                 ClawMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                ClawMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 ClawMotor.setVelocity(ARM_DOWN_VELOCITY);
-                telemetry.addLine("   Arm set to position " + armPosition);
+                ClawMotor2.setVelocity(ARM_DOWN_VELOCITY);
+                telemetry.addLine("   Arm motors set to position " + armPosition);
             }
         }
         else if (gamepad1.y){
@@ -94,8 +101,11 @@ public class TeleOpHopper extends OpMode {
             if (armPosition != ARM_UP_POSITION) {
                 armPosition = ARM_UP_POSITION;
                 ClawMotor.setTargetPosition(armPosition);
+                ClawMotor2.setTargetPosition(armPosition);
                 ClawMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                ClawMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 ClawMotor.setVelocity(ARM_UP_VELOCITY);
+                ClawMotor2.setVelocity(ARM_UP_VELOCITY);
                 telemetry.addLine("   Arm set to position " + armPosition);
             }
         }
@@ -138,5 +148,7 @@ public class TeleOpHopper extends OpMode {
         TopRight.setPower(0.0);
         BottomLeft.setPower(0.0);
         BottomRight.setPower(0.0);
+        ClawMotor.setPower(0.0);
+        ClawMotor2.setPower(0.0);
     }
 }

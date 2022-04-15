@@ -26,14 +26,14 @@ public class TeleOpHypatiaRed extends OpMode {
     private int elbowPosition;
 
     // Ideal encoder tick position for arm to be in full up or down position
-    private final int ARM_UP_POSITION = -35;
+    private final int ARM_UP_POSITION = -80;
     private final int ARM_DOWN_POSITION = 0;
 
     private final int ELBOW_UP_POSITION = 60;
     private final int ELBOW_DOWN_POSITION = 0;
 
     // Ideal speed (in encoder ticks/second) to try to get to up or down positions
-    private final int ARM_UP_VELOCITY = 100;
+    private final int ARM_UP_VELOCITY = 80;
     private final int ARM_DOWN_VELOCITY = 100;
 
     private final int ELBOW_UP_VELOCITY = 100;

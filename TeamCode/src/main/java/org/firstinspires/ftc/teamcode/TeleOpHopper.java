@@ -25,12 +25,15 @@ public class TeleOpHopper extends OpMode {
     private int armPosition;
 
     // Ideal encoder tick position for arm to be in full up or down position
-    private final int ARM_UP_POSITION = -75;
+    private final int ARM_UP_POSITION = -95;
     private final int ARM_DOWN_POSITION = -5;
 
     // Ideal speed (in encoder ticks/second) to try to get to up or down positions
-    private final int ARM_UP_VELOCITY = 300;
+    private final int ARM_UP_VELOCITY = 380;
     private final int ARM_DOWN_VELOCITY = 75;
+
+    private final int CLAW_OPEN_POSITION = 0;
+    private final int CLAW_CLOSED_POSITION = 150;
 
     @Override
     public void init() {
@@ -57,11 +60,13 @@ public class TeleOpHopper extends OpMode {
         armPosition = 0;
 
         ClawGrabber = hardwareMap.get(DcMotorEx.class, "ClawGrabber");
+        ClawGrabber.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 //        ClawGrabber.setDirection(DcMotorSimple.Direction.FORWARD);
         //ClawGrabber.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         Duck = hardwareMap.servo.get("Duck");
         telemetry.addLine("Motor encoders reset to 0.");
+        telemetry.addLine("Sarah is awesome");
 
     }
 
@@ -110,12 +115,16 @@ public class TeleOpHopper extends OpMode {
             }
         }
        else if (gamepad1.x) {
-            ClawGrabber.setPower(0.3);
-            telemetry.addLine("X press: Claw grabber 0.2 power");
+            ClawGrabber.setTargetPosition(CLAW_OPEN_POSITION);
+            ClawGrabber.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            ClawGrabber.setVelocity(230);
+            telemetry.addLine("X press:  Arm set to position " + CLAW_OPEN_POSITION);
         }
         else if (gamepad1.b) {
-            ClawGrabber.setPower(-0.3);
-            telemetry.addLine("B press: Claw motor -0.2 power");
+            ClawGrabber.setTargetPosition(CLAW_CLOSED_POSITION);
+            ClawGrabber.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            ClawGrabber.setVelocity(180);
+            telemetry.addLine("B press:  Arm set to position " + CLAW_CLOSED_POSITION);
         }
         else if (gamepad1.left_bumper) {
             Duck.setPosition(1);
@@ -123,7 +132,7 @@ public class TeleOpHopper extends OpMode {
         }
         else {
 //            ClawMotor.setPower(0.0);
-            ClawGrabber.setPower(0.0);
+//            ClawGrabber.setPower(0.0);
             telemetry.addLine("Claw motors stopped.");
             Duck.setPosition(0);
         }
@@ -150,5 +159,6 @@ public class TeleOpHopper extends OpMode {
         BottomRight.setPower(0.0);
         ClawMotor.setPower(0.0);
         ClawMotor2.setPower(0.0);
+        ClawGrabber.setPower(0.0);
     }
 }
